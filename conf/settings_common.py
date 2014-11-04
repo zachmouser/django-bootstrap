@@ -1,11 +1,12 @@
 import sys
+
 from os.path import abspath, basename, dirname, join, normpath
 
-from helpers import gen_secret_key
+from lib.numbers import random_int
 
 ########## PATH CONFIGURATION
 # Absolute filesystem path to this Django project directory.
-DJANGO_ROOT = dirname(dirname(abspath(__file__)))
+DJANGO_ROOT = join(dirname(dirname(abspath(__file__))), 'site')
 
 # Site name.
 SITE_NAME = basename(DJANGO_ROOT)
@@ -15,7 +16,7 @@ SITE_ROOT = dirname(DJANGO_ROOT)
 
 # Absolute filesystem path to the secret file which holds this project's
 # SECRET_KEY. Will be auto-generated the first time this file is interpreted.
-SECRET_FILE = normpath(join(SITE_ROOT, 'deploy', 'SECRET'))
+SECRET_FILE = normpath(join(SITE_ROOT, 'conf', 'django.secret'))
 
 # Add all necessary filesystem paths to our system path so that we can use
 # python import statements.
@@ -138,17 +139,12 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
 
-    # South migration tool.
-    'south',
-
     # Celery task queue.
     'djcelery',
 
     # django-sentry log viewer.
     'indexer',
     'paging',
-    'sentry',
-    'sentry.client',
 )
 ########## END APP CONFIGURATION
 
@@ -158,7 +154,7 @@ djcelery.setup_loader()
 ########## END CELERY CONFIGURATION
 
 ########## URL CONFIGURATION
-ROOT_URLCONF = '%s.urls' % SITE_NAME
+ROOT_URLCONF = 'conf.urls'
 ########## END URL CONFIGURATION
 
 ########## KEY CONFIGURATION
@@ -170,7 +166,9 @@ try:
 except IOError:
     try:
         with open(SECRET_FILE, 'w') as f:
-            f.write(gen_secret_key(50))
+            r = str(random_int(50))
+            SECRET_KEY = r
+            f.write(r)
     except IOError:
         raise Exception('Cannot open file `%s` for writing.' % SECRET_FILE)
 ########## END KEY CONFIGURATION
