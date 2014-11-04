@@ -1,11 +1,7 @@
-"""Common settings and globals."""
-
-
 import sys
 from os.path import abspath, basename, dirname, join, normpath
 
 from helpers import gen_secret_key
-
 
 ########## PATH CONFIGURATION
 # Absolute filesystem path to this Django project directory.
@@ -25,9 +21,8 @@ SECRET_FILE = normpath(join(SITE_ROOT, 'deploy', 'SECRET'))
 # python import statements.
 sys.path.append(SITE_ROOT)
 sys.path.append(normpath(join(DJANGO_ROOT, 'apps')))
-sys.path.append(normpath(join(DJANGO_ROOT, 'libs')))
+sys.path.append(normpath(join(DJANGO_ROOT, 'lib')))
 ########## END PATH CONFIGURATION
-
 
 ########## DEBUG CONFIGURATION
 # Disable debugging by default.
@@ -35,17 +30,15 @@ DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 ########## END DEBUG CONFIGURATION
 
-
 ########## MANAGER CONFIGURATION
 # Admin and managers for this project. These people receive private site
 # alerts.
 ADMINS = (
-    ('Your Name', 'your_email@example.com'),
+    ('Zachary Miller', 'zachary.m.miller@gmail.com'),
 )
 
 MANAGERS = ADMINS
 ########## END MANAGER CONFIGURATION
-
 
 ########## GENERAL CONFIGURATION
 # Local time zone for this installation. Choices can be found here:
@@ -74,7 +67,6 @@ USE_I18N = False
 USE_L10N = True
 ########## END GENERAL CONFIGURATION
 
-
 ########## MEDIA CONFIGURATION
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 MEDIA_ROOT = normpath(join(DJANGO_ROOT, 'media'))
@@ -82,7 +74,6 @@ MEDIA_ROOT = normpath(join(DJANGO_ROOT, 'media'))
 # URL that handles the media served from MEDIA_ROOT.
 MEDIA_URL = '/media/'
 ########## END MEDIA CONFIGURATION
-
 
 ########## STATIC FILE CONFIGURATION
 # Absolute path to the directory static files should be collected to. Don't put
@@ -110,7 +101,6 @@ STATICFILES_FINDERS = (
 )
 ########## END STATIC FILE CONFIGURATION
 
-
 ########## TEMPLATE CONFIGURATION
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -125,7 +115,6 @@ TEMPLATE_DIRS = (
 )
 ########## END TEMPLATE CONFIGURATION
 
-
 ########## MIDDLEWARE CONFIGURATION
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -135,7 +124,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 ########## END MIDDLEWARE CONFIGURATION
-
 
 ########## APP CONFIGURATION
 INSTALLED_APPS = (
@@ -164,17 +152,14 @@ INSTALLED_APPS = (
 )
 ########## END APP CONFIGURATION
 
-
 ########## CELERY CONFIGURATION
 import djcelery
 djcelery.setup_loader()
 ########## END CELERY CONFIGURATION
 
-
 ########## URL CONFIGURATION
 ROOT_URLCONF = '%s.urls' % SITE_NAME
 ########## END URL CONFIGURATION
-
 
 ########## KEY CONFIGURATION
 # Try to load the SECRET_KEY from our SECRET_FILE. If that fails, then generate
