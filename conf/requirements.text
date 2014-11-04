@@ -1,0 +1,8 @@
+Django==1.7.1
+Fabric==1.10.0
+argparse==1.2.1
+django-helpers==0.2.0.1415128950.47
+ecdsa==0.11
+paramiko==1.15.1
+pycrypto==2.6.1
+wsgiref==0.1.2
