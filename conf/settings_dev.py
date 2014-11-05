@@ -11,11 +11,15 @@ TEMPLATE_DEBUG = DEBUG
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 ########## END EMAIL CONFIGURATION
 
+########## TESTRUNNER CONFIGURATION
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+########## END TESTRUNNER CONFIGURATION
+
 ########## DATABASE CONFIGURATION
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': normpath(join(SITE_ROOT, 'db', 'default.db')),
+        'NAME': normpath(join(DJANGO_ROOT, 'db', 'default.db')),
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
@@ -42,7 +46,7 @@ INSTALLED_APPS += (
 )
 
 # IPs allowed to see django-debug-toolbar output.
-INTERNAL_IPS = ('127.0.0.1',)
+INTERNAL_IPS = ('127.0.0.1', '192.168.15.63')
 
 DEBUG_TOOLBAR_CONFIG = {
     # If set to True (default), the debug toolbar will show an intermediate
@@ -58,7 +62,7 @@ DEBUG_TOOLBAR_CONFIG = {
     # the IP of the request must be in INTERNAL_IPS. You can provide your own
     # method for displaying the toolbar which contains your custom logic. This
     # method should return True or False.
-    'SHOW_TOOLBAR_CALLBACK': None,
+    #'SHOW_TOOLBAR_CALLBACK': None,
 
     # An array of custom signals that might be in your project, defined as the
     # python path to the signal.
