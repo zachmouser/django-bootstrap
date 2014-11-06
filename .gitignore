@@ -1,3 +1,4 @@
 static/
 conf/*.secret
 db/
+*.pyc
