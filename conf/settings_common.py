@@ -1,5 +1,6 @@
 import sys
 
+from os import walk
 from os.path import abspath, basename, dirname, join, normpath
 
 from lib.numbers import random_int
@@ -114,6 +115,8 @@ TEMPLATE_LOADERS = (
 TEMPLATE_DIRS = (
     normpath(join(DJANGO_ROOT, 'templates')),
 )
+# Add app templates.
+TEMPLATE_DIRS += tuple([normpath(join(join(join(DJANGO_ROOT, 'apps'), item), 'templates')) for item in walk(normpath(join(DJANGO_ROOT, 'apps'))).next()[1]])
 ########## END TEMPLATE CONFIGURATION
 
 ########## MIDDLEWARE CONFIGURATION
@@ -145,6 +148,9 @@ INSTALLED_APPS = (
     # django-sentry log viewer.
     'indexer',
     'paging',
+
+    # Base project:
+    'base',
 )
 ########## END APP CONFIGURATION
 
