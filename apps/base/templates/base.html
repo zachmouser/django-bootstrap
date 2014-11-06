@@ -10,14 +10,19 @@
 
     <title>{% block title %}{% endblock %}</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="{% STATIC_URL %}bootstrap.min.css" rel="stylesheet">
+    <!-- BEGIN: Bootstrap core CSS -->
+    <link href="{{ STATIC_URL }}css/bootstrap-3.3.0.min.css" rel="stylesheet">
+    <!-- END: Bootstrap core CSS -->
+
+    <!-- BEGIN: Custom core CSS -->
+    <link href="{{ STATIC_URL }}css/base.css" rel="stylesheet">
     {% block style %}{% endblock %}
+    <!-- END: Custom core CSS -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-      <script src="{% STATIC_URL %}html5shiv-3.7.2.min.js"></script>
-      <script src="{% STATIC_URL %}respond-1.4.2.min.js"></script>
+      <script src="{{ STATIC_URL }}html5shiv-3.7.2.min.js"></script>
+      <script src="{{ STATIC_URL }}respond-1.4.2.min.js"></script>
     <![endif]-->
   </head>
 
@@ -229,9 +234,9 @@
     </div>
 
     <!-- Bootstrap core JavaScript -->
-    <script src="{% STATIC_URL %}jquery-1.11.1.min.js"></script>
-    <script src="{% STATIC_URL %}bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}js/third-party/jquery-1.11.1.min.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-3.3.0.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="{% STATIC_URL %}ie10-viewport-bug-workaround.js"></script>
+    <script src="{{ STATIC_URL }}js/third-party/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>

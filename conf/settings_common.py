@@ -1,7 +1,7 @@
 import sys
 
 from os import walk
-from os.path import abspath, basename, dirname, join, normpath
+from os.path import abspath, basename, dirname, join, normpath, isdir
 
 from lib.numbers import random_int
 
@@ -90,9 +90,10 @@ STATIC_URL = '/static/'
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 # Additional locations of static files.
-STATICFILES_DIRS = (
-    normpath(join(DJANGO_ROOT, 'assets')),
-)
+STATICFILES_DIRS = ()
+for item in walk(normpath(join(DJANGO_ROOT, 'apps'))).next()[1]:
+    asset = normpath(join(join(join(DJANGO_ROOT, 'apps'), item), 'assets'))
+    if isdir(asset): STATICFILES_DIRS += tuple([asset])
 
 # List of finder classes that know how to find static files in various
 # locations.

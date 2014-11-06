@@ -15,6 +15,7 @@ ADDRESS=0.0.0.0:9002
 cd $SITEDIR
 source $BASEDIR/bin/activate
 test -d $(dirname $LOGFILE) || mkdir -p $LOGDIR
-gunicorn conf.moto_wsgi:application -w $NUM_WORKERS --bind=$ADDRESS \
+nuhup python manage.py collectstatic --noinput &
+exec gunicorn conf.moto_wsgi:application -w $NUM_WORKERS --bind=$ADDRESS \
   --user=$USER --group=$GROUP --timeout=$TIMEOUT \
   --log-file=$LOGFILE 2>>$LOGFILE --log-level=debug
