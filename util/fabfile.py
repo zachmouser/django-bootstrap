@@ -5,47 +5,50 @@ from contextlib import contextmanager
 from fabric.api import *
 from fabric.contrib import files
 
-_env = None
+class setup(object):
 
-def install_virtualenv():
+    def __init__(self):
+        self._env = None
+        self._project_name = prompt('Project name: ')
 
-    sudo('apt-get install python-pip')
-    sudo('pip install virtualenv')
+    def install_virtualenv(self):
 
-@contextmanager
-def source_virtualenv():
-    with prefix('source {env}/bin/activate'.format(env=_env)):
-        yield
+        sudo('apt-get install python-pip')
+        sudo('pip install virtualenv')
 
-def start_virtualenv():
+    @contextmanager
+    def source_virtualenv(self):
+        with prefix('source {env}/bin/activate'.format(env=self._env)):
+            yield
 
-    env_name = prompt('Virtual environment name: ')
-    location = prompt('Environment location: ', default='/opt/env')
-    _env = '{location}/{env}'.format(location=location, env=env_name)
+    def start_virtualenv(self):
 
-    sudo('mkdir -p {env}'.format(env=env))
-    sudo('virtualenv {env} --no-site-packages'.format(env=_env))
+        location = prompt('Environment location: ', default='/opt/env')
+        self._env = '{location}/{env}'.format(location=location, env=self._project_name)
 
-    run('cd {env}'.format(env=_env))
+        sudo('mkdir -p {env}'.format(env=self._env))
+        sudo('virtualenv {env} --no-site-packages'.format(env=self._env))
 
-    with source_virtualenv():
-        install_django()
+        run('cd {env}'.format(env=self._env))
 
-def install_django():
+        with self.source_virtualenv():
+            self.install_django()
 
-    version = prompt('Install Django version: ', default='1.7.1')
-    sudo('pip install Django=={version}'.format(version=version))
+    def install_django(self):
 
-def install_django_project():
+        version = prompt('Install Django version: ', default='1.7.1')
+        sudo('pip install Django=={version}'.format(version=version))
 
-    project_name = prompt('Project name: ')
-    git_repo = prompt('Repository location: ')
+    def install_django_project(self):
 
-    with source_environment(env=_env):
-        sudo('django-admin startproject --extension=py,conf --template={repo} {project}'.format(repo=git_repo, project=project_name))
+        git_repo = prompt('Repository location: ')
+
+        with self.source_virtualenv():
+            sudo('django-admin startproject --extension=py,conf --template={repo} {project} {env}'.format(repo=git_repo, project=self._project_name, env=self._env))
 
 if __name__ == '__main__':
 
-    install_virtualenv()
-    start_virtualenv()
-    install_django_project()
+    s = setup()
+    s.install_virtualenv()
+    s.start_virtualenv()
+    s.install_django_project()
