@@ -17,7 +17,7 @@ class setup(object):
         sudo('pip install virtualenv')
 
     @contextmanager
-    def source_virtualenv(self):
+    def virtualenv(self):
         with prefix('source {env}/bin/activate'.format(env=self._env)):
             yield
 
@@ -31,7 +31,7 @@ class setup(object):
 
         run('cd {env}'.format(env=self._env))
 
-        with self.source_virtualenv():
+        with self.virtualenv():
             self.install_django()
 
     def install_django(self):
@@ -43,8 +43,39 @@ class setup(object):
 
         git_repo = prompt('Repository location: ')
 
-        with self.source_virtualenv():
-            sudo('django-admin startproject --extension=py,conf --template={repo} {project} {env}'.format(repo=git_repo, project=self._project_name, env=self._env))
+        with self.virtualenv():
+            sudo('django-admin startproject --extension=py,conf --template={repo} {project} {env}/site'.format(repo=git_repo, project=self._project_name, env=self._env))
+
+    def configure_django_project(self):
+
+        with virtualenv():
+
+            requirements = '{env}/conf/requirements.txt'.format(env=self._env)
+            if files.exists(requirements):
+                sudo('pip install -r {requirements}'.format(requirements=requirements))
+
+    def configure_nginx(self):
+
+        nginx = '{env}/conf/nginx.conf'.format(env=self._env)
+        nginx_conf = None
+
+        if files.exists(nginx):
+            sudo('apt-get install nginx')
+            files.sed(nginx, before='\{nginxr-port\}', after=prompt('Enter nginx listen port: ', default=9001))
+            files.sed(supervisor, before='\{gunicorn-port\}', after=prompt('Enter gunicorn listen port: ', default=9002))
+
+        sudo('mv {nginx} /etc/nginx/sites-enabled/nginx-{project}.conf'.format(nginx=nginx, project=self.project_name))
+
+    def configure_supervisor(self):
+
+        supervisor = '{env}/conf/supervisor.conf'
+
+        if files.exists(supervisor):
+            sudo('apt-get install supervisor')
+            files.sed(supervisor, before='\{gunicorn-port\}', after=prompt('Enter gunicorn listen port: ', default=9002))
+            files.sed(supervisor, before='\{env\}', after=prompt('Enter Django environment type: ', default='dev'))
+
+        sudo('mv {supervisor} /etc/supervisor/conf.d/supervisor-{project}.conf'.format(supervisor=supervisor, project=self.project_name))
 
 if __name__ == '__main__':
 
@@ -52,3 +83,5 @@ if __name__ == '__main__':
     s.install_virtualenv()
     s.start_virtualenv()
     s.install_django_project()
+    s.configure_nginx()
+    s.configure_supervisor()

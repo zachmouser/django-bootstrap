@@ -3,6 +3,7 @@
 # Site and environment set by supervisor.
 SITE=$1
 ENV=$2
+PORT=$3
 
 export LD_LIBRARY_PATH=/opt/instantclient_11_2/:/usr/local/lib/
 set -e
@@ -15,7 +16,7 @@ TIMEOUT=240
 # user/group to run as
 USER=zachary
 GROUP=zachary
-ADDRESS=0.0.0.0:9002
+ADDRESS=0.0.0.0:$PORT
 
 cd $SITEDIR
 source $BASEDIR/bin/activate
