@@ -67,7 +67,8 @@ class setup(object):
             files.sed(nginx, before='\{gunicorn-port\}', after=guni_port, use_sudo=True)
             files.sed(nginx, before='\{path\}', after=self._path, use_sudo=True)
 
-            sudo('mv {nginx} /etc/nginx/sites-enabled/nginx-{project}.conf'.format(nginx=nginx, project=self._project_name))
+            conf = '/etc/nginx/sites-enabled/nginx-{project}.conf'.format(project=self._project_name)
+            sudo('mv {nginx} {conf}'.format(nginx=nginx, conf=conf))
 
             sudo('service nginx restart')
 
@@ -82,10 +83,15 @@ class setup(object):
             files.sed(supervisor, before='\{env\}', after=prompt(green('Enter Django environment type: '), default='dev'), use_sudo=True)
             files.sed(supervisor, before='\{path\}', after=self._path, use_sudo=True)
 
-            sudo('mkdir -p {path}/log'.format(path=self._path))
-            sudo('mv {supervisor} /etc/supervisor/conf.d/supervisor-{project}.conf'.format(supervisor=supervisor, project=self._project_name))
+            sudo('chmod +x {env}/site/util/supervisor.sh'.format(env=self._path))
 
-            sudo('service supervisor start && supervisorctl reload')
+            sudo('mkdir -p {path}/log'.format(path=self._path))
+
+            conf = '/etc/supervisor/conf.d/supervisor-{project}.conf'.format(project=self._project_name)
+            sudo('mv {supervisor} {conf}'.format(supervisor=supervisor, conf=conf))
+
+            sudo('supervisorctl reload')
+            sudo('supervisorctl start {project}'.format(project=self._project_name))
 
             self.configure_nginx(port)
 
