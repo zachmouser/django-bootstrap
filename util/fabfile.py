@@ -63,10 +63,13 @@ class setup(object):
 
         if files.exists(nginx):
             sudo('apt-get install nginx')
-            files.sed(nginx, before='\{nginxr-port\}', after=prompt(green('Enter nginx listen port: '), default=9001), use_sudo=True)
+            files.sed(nginx, before='\{nginx-port\}', after=prompt(green('Enter nginx listen port: '), default=9001), use_sudo=True)
             files.sed(nginx, before='\{gunicorn-port\}', after=guni_port, use_sudo=True)
+            files.sed(nginx, before='\{path\}', after=self._path, use_sudo=True)
 
             sudo('mv {nginx} /etc/nginx/sites-enabled/nginx-{project}.conf'.format(nginx=nginx, project=self._project_name))
+
+            sudo('service nginx restart')
 
     def configure_supervisor(self):
 
@@ -79,7 +82,10 @@ class setup(object):
             files.sed(supervisor, before='\{env\}', after=prompt(green('Enter Django environment type: '), default='dev'), use_sudo=True)
             files.sed(supervisor, before='\{path\}', after=self._path, use_sudo=True)
 
+            sudo('mkdir -p {path}/log'.format(path=self._path))
             sudo('mv {supervisor} /etc/supervisor/conf.d/supervisor-{project}.conf'.format(supervisor=supervisor, project=self._project_name))
+
+            sudo('service supervisor start && supervisorctl reload')
 
             self.configure_nginx(port)
 
