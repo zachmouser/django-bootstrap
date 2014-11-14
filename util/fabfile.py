@@ -50,7 +50,7 @@ class setup(object):
 
             requirements = '{env}/site/conf/requirements.text'.format(env=self._path)
             if files.exists(requirements):
-                sudo('pip install -r {requirements}'.format(requirements=requirements))
+                sudo('pip install -r {requirements} -q'.format(requirements=requirements))
             else: print yellow('No requirements file found at [{req}]. No additional libraries installed.'.format(req=requirements))
 
     def install_django(self):
@@ -103,7 +103,6 @@ class setup(object):
             self.supervisor_conf = conf
 
             sudo('supervisorctl reload')
-            sudo('supervisorctl start {project}'.format(project=self._project_name))
 
             self.configure_nginx(port)
 
