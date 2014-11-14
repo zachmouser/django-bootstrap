@@ -7,7 +7,6 @@ billiard==3.3.0.18
 celery==3.1.16
 django-celery==3.1.16
 django-debug-toolbar==1.2.2
-django-helpers==0.2.0.1415128950.47
 django-indexer==0.3.0
 django-kombu==0.9.4
 django-paging==0.2.5

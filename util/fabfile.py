@@ -3,7 +3,7 @@
 from contextlib import contextmanager
 
 from fabric.api import *
-from fabric.colors import green, yellow
+from fabric.colors import green, yellow, red
 from fabric.contrib import files
 
 class setup(object):
@@ -44,6 +44,15 @@ class setup(object):
         with self.virtualenv():
             self.install_django()
 
+    def configure_virtualenv(self):
+
+        with self.virtualenv():
+
+            requirements = '{env}/site/conf/requirements.text'.format(env=self._path)
+            if files.exists(requirements):
+                sudo('pip install -r {requirements}'.format(requirements=requirements))
+            else: print yellow('No requirements file found at [{req}]. No additional libraries installed.'.format(req=requirements))
+
     def install_django(self):
 
         version = prompt(green('Install Django version: '), default='1.7.1')
@@ -56,14 +65,6 @@ class setup(object):
         sudo('mkdir -p {env}/site'.format(env=self._path))
         with self.virtualenv():
             sudo('django-admin startproject --extension=py,conf --template={repo} {project} {env}/site'.format(repo=git_repo, project=self._project_name, env=self._path))
-
-    def configure_django_project(self):
-
-        with virtualenv():
-
-            requirements = '{env}/conf/requirements.txt'.format(env=self._path)
-            if files.exists(requirements):
-                sudo('pip install -r {requirements}'.format(requirements=requirements))
 
     def configure_nginx(self, guni_port):
 
@@ -120,11 +121,12 @@ class setup(object):
 if __name__ == '__main__':
 
     s = setup()
-    try:
-        s.install_virtualenv()
-        s.start_virtualenv()
-        s.install_django_project()
-        s.configure_supervisor()
-    except:
-        #s.teardown()
-        pass
+    #try:
+    s.install_virtualenv()
+    s.start_virtualenv()
+    s.install_django_project()
+    s.configure_virtualenv()
+    s.configure_supervisor()
+    #except:
+    #    #s.teardown()
+    #    pass
