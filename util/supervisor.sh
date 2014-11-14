@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # Site and environment set by supervisor.
-SITE=$1
-ENV=$2
-PORT=$3
+BASE=$1
+SITE=$2
+ENV=$3
+PORT=$4
 
 export LD_LIBRARY_PATH=/opt/instantclient_11_2/:/usr/local/lib/
 set -e
 
-BASEDIR=/opt/web/$SITE
-SITEDIR=$BASEDIR/site
-LOGFILE=$BASEDIR/log/gunicorn-$SITE.log
+SITEDIR=$BASE/site
+LOGFILE=$BASE/log/gunicorn-$SITE.log
 NUM_WORKERS=10
 TIMEOUT=240
 # user/group to run as
@@ -19,7 +19,7 @@ GROUP=zachary
 ADDRESS=0.0.0.0:$PORT
 
 cd $SITEDIR
-source $BASEDIR/bin/activate
+source $BASE/bin/activate
 test -d $(dirname $LOGFILE) || mkdir -p $LOGDIR
 nohup python manage.py collectstatic --noinput &
 exec gunicorn "conf.wsgi:application" -w $NUM_WORKERS --bind=$ADDRESS \
