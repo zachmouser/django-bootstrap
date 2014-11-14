@@ -21,7 +21,7 @@ ADDRESS=0.0.0.0:$PORT
 cd $SITEDIR
 source $BASE/bin/activate
 test -d $(dirname $LOGFILE) || mkdir -p $LOGDIR
-nohup python manage.py collectstatic --noinput &
+nohup python manage.py collectstatic --noinput -iless &
 exec gunicorn "conf.wsgi:application" -w $NUM_WORKERS --bind=$ADDRESS \
   --user=$USER --group=$GROUP --timeout=$TIMEOUT --settings=conf.settings_$ENV \
   --log-file=$LOGFILE 2>>$LOGFILE --log-level=debug
