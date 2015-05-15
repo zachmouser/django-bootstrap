@@ -66,7 +66,20 @@ body {
   background-color: #428bca;
 }
 
-
+.nav-sidebar-sub {
+  list-style-type: none;
+  background-color: #7BAEDA;
+  color: white;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.nav-sidebar-sub div {
+  padding-left: 35px;
+}
+.nav-sidebar-sub a {
+  color: white;
+  text-decoration: none;
+}
 /*
  * Main content
  */
@@ -103,3 +116,19 @@ body {
   display: inline-block;
   border-radius: 50%;
 }
+
+.grey-gradient {
+    background: rgba(179,179,179,1);
+    background: -moz-linear-gradient(left, rgba(179,179,179,1) 0%, rgba(255,255,255,1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(179,179,179,1)), color-stop(100%, rgba(255,255,255,1)));
+    background: -webkit-linear-gradient(left, rgba(179,179,179,1) 0%, rgba(255,255,255,1) 100%);
+    background: -o-linear-gradient(left, rgba(179,179,179,1) 0%, rgba(255,255,255,1) 100%);
+    background: -ms-linear-gradient(left, rgba(179,179,179,1) 0%, rgba(255,255,255,1) 100%);
+    background: linear-gradient(to right, rgba(179,179,179,1) 0%, rgba(255,255,255,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3b3b3', endColorstr='#ffffff', GradientType=1 );
+}
+.column-centered {
+    float: none;
+    margin: 0 auto;
+}
+.inline { display: inline-block; }

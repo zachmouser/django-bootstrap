@@ -1,0 +1,6 @@
+[program:phyins_tools]
+directory={path}/site
+user=root
+command={path}/site/util/supervisor.sh {path} phyins_tools dev 9002
+stdout_logfile={path}/log/supervisor.log
+stderr_logfile={path}/log/supervisor.error.log

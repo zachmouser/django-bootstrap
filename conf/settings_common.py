@@ -139,6 +139,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Admin Bootstrap
+    'django_admin_bootstrapped',
+
     # Admin panel and documentation.
     'django.contrib.admin',
     'django.contrib.admindocs',

@@ -49,7 +49,7 @@ class setup(object):
         with self.virtualenv():
 
             requirements = '{env}/site/conf/requirements.text'.format(env=self._path)
-            if files.exists(requirements):
+            if files.exists(requirements, use_sudo=True):
                 sudo('pip install -r {requirements} -q'.format(requirements=requirements))
             else: print yellow('No requirements file found at [{req}]. No additional libraries installed.'.format(req=requirements))
 
@@ -89,7 +89,7 @@ class setup(object):
 
         if files.exists(supervisor):
             sudo('apt-get install supervisor')
-            port = prompt(green('Enter gunicorn listen port: '), default=9002)
+            port = str(prompt(green('Enter gunicorn listen port: '), default=9002))
             files.sed(supervisor, before='\{gunicorn-port\}', after=port, use_sudo=True)
             files.sed(supervisor, before='\{env\}', after=prompt(green('Enter Django environment type: '), default='dev'), use_sudo=True)
             files.sed(supervisor, before='\{path\}', after=self._path, use_sudo=True)

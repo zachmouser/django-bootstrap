@@ -18,20 +18,21 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 ########## DATABASE CONFIGURATION
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': normpath(join(DJANGO_ROOT, 'db', 'default.db')),
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
-    }
+        'ENGINE':   'django.db.backends.postgresql_psycopg2',
+        'NAME':     'phyins_tools',
+        'USER':     'pg_admin',
+        'PASSWORD': '@dm!n',
+        'HOST':     'dev20',
+        'PORT':     '5432',
+    },
 }
 ########## END DATABASE CONFIGURATION
 
 ########## CACHE CONFIGURATION
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
     }
 }
 ########## END CACHE CONFIGURATION
