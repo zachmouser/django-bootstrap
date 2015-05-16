@@ -73,7 +73,7 @@ class setup(object):
 
         if files.exists(nginx):
             sudo('apt-get install nginx')
-            files.sed(nginx, before='\{nginx-port\}', after=prompt(green('Enter nginx listen port: '), default=9001), use_sudo=True)
+            files.sed(nginx, before='\{nginx-port\}', after=prompt(green('Enter nginx listen port: '), default='9001'), use_sudo=True)
             files.sed(nginx, before='\{gunicorn-port\}', after=guni_port, use_sudo=True)
             files.sed(nginx, before='\{path\}', after=self._path, use_sudo=True)
 
